@@ -16,9 +16,10 @@
         :item="item"
         :playing="playing"
         :currentSongId="currentSongId"
-        @change-current-song="$emit('change-current-song', $event)"
+        @change-current-song="$emit('change-current-song', $event,songList)"
       ></SongListItem>
     </ul>
+    
   </div>
 </template>
 

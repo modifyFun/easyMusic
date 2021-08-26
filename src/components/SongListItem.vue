@@ -1,12 +1,13 @@
 <template>
   <li class="song_item" @click="$emit('change-current-song',data)">
+    <slot></slot>
     <div class="left">
       <h3>
         {{ data.name
         }}<span v-for="alias in data.alias" :key="alias">{{ alias }}</span>
       </h3>
       <div class="info">
-        <em>sq</em>
+        <em></em>
         <i v-for="artiset in data.artists" :key="artiset.id">
           {{ artiset.name }}</i
         >
@@ -96,6 +97,11 @@ export default {
 
       em {
         font-style: normal;
+        display: inline-block;
+        width: 12px;
+        height: 8px;
+        background: url(../assets/img/index_icon_2x.png) no-repeat;
+        background-size: 166px 97px;
       }
       i {
         font-style: normal;
@@ -132,24 +138,26 @@ export default {
       }
       i{
         width: 2px;
-        height: 100%;
+        height: 80%;
         background-color: red;
         animation: 1s playing linear alternate infinite paused;
         // animation-play-state: paused;
         &:nth-child(1){
           height: 90%;
+           animation-delay: 0.9s;
         }
         &:nth-child(2){
           height: 80%;
-          animation-delay: 0.4s;
+           animation-delay: 0.6s;
         }
         &:nth-child(3){
-          height: 100%;
-          animation-delay: 1s;
+          height: 70%;
+         animation-delay: 0.3s;
         }
         &:nth-child(4){
-          height: 90%;
-          animation-delay: 1.2s;
+          height: 80%;
+          
+         
         }
       }
 
@@ -162,7 +170,7 @@ export default {
       height: 80%;
     }
     to{
-      height: 10%;
+      height: 20%;
     }
 }
 </style>

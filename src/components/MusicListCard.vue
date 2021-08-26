@@ -1,5 +1,5 @@
 <template>
-  <li @click="$router.push('playlists?id=' + item.id)" class="card">
+  <li @click="$router.push('Songlists?id=' + item.id)" class="card">
     <div class="thumb">
       <img
         :src="item.picUrl + '?imageView=1&type=webp&thumbnail=370x0'"

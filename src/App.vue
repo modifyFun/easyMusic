@@ -11,6 +11,7 @@
       :currentSongId="currentSong ? currentSong.id : null"
     />
     <audio
+      ref="audio"
       :src="audioSource"
       controls
       autoplay
@@ -19,7 +20,15 @@
       @timeupdate="timeupdate"
       @durationchange="durationchange"
     />
-    <PlayBar :currentSong="currentSong" :playing="playing" :prencent="prencent" class="app_playBar"/>
+    <PlayBar
+      :currentSong="currentSong"
+      :playing="playing"
+      :prencent="prencent"
+      :currentSongList="currentSongList"
+      @change-playing="changePlaying"
+      @change-current-song="changeCurrentSong"
+      class="app_playBar"
+    />
   </div>
 </template>
 
@@ -56,15 +65,15 @@
 }
 @font-face {
   font-family: "iconfont"; /* Project id 2763996 */
-  src: url("//at.alicdn.com/t/font_2763996_wy345d9hxh.woff2?t=1629726302213")
+  src: url("//at.alicdn.com/t/font_2763996_skzk8fc3nd.woff2?t=1629947647946")
       format("woff2"),
-    url("//at.alicdn.com/t/font_2763996_wy345d9hxh.woff?t=1629726302213")
+    url("//at.alicdn.com/t/font_2763996_skzk8fc3nd.woff?t=1629947647946")
       format("woff"),
-    url("//at.alicdn.com/t/font_2763996_wy345d9hxh.ttf?t=1629726302213")
+    url("//at.alicdn.com/t/font_2763996_skzk8fc3nd.ttf?t=1629947647946")
       format("truetype");
 }
 
-.app_playBar{
+.app_playBar {
   position: fixed;
   left: 0;
   bottom: -1px;
@@ -81,29 +90,35 @@ export default {
   data: function () {
     return {
       currentSong: null,
+      currentSongList:null,
       playing: false,
-      currentTime:0,
-      duration:0,
+      currentTime: 0,
+      duration: 0,
     };
   },
   methods: {
-    changeCurrentSong: function (item) {
+    changeCurrentSong: function (item, songList) {
+      console.log(item);
+      this.currentSongList = songList||this.currentSongList;
       this.currentSong = item;
     },
-    timeupdate:function(e){
+    timeupdate: function (e) {
       this.currentTime = e.target.currentTime;
-    }, 
-    durationchange:function(e){
+    },
+    durationchange: function (e) {
       this.duration = e.target.duration;
-    }, 
+    },
+    changePlaying: function (val) {
+      val ? this.$refs.audio.play() : this.$refs.audio.pause();
+    },
   },
   computed: {
     audioSource: function () {
       return `https://music.163.com/song/media/outer/url?id=${this.currentSong?.id}.mp3`;
     },
-    prencent:function(){
-      return this.currentTime/this.duration;
-    }
+    prencent: function () {
+      return this.currentTime / this.duration;
+    },
   },
 };
 </script>

@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Search from "../views/Search.vue";
-import PlayLists from "../views/PlayLists.vue";
+import SongLists from "../views/SongLists.vue";
 
 Vue.use(VueRouter);
 
@@ -29,9 +29,9 @@ const routes = [
     meta: { showNavBar: true },
   },
   {
-    path: "/playlists",
-    name: "PlayLists",
-    component: PlayLists,
+    path: "/Songlists",
+    name: "SongLists",
+    component: SongLists,
   },
 ];
 
