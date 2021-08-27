@@ -1,30 +1,37 @@
 <template>
-  <div class="home">
-    <HomeTitle>编辑推荐</HomeTitle>
-    <ul class="home_cardlist">
-      <MusicListCard
-        v-for="item in personalizeds"
-        :key="item.id"
-        :item="item"
-      ></MusicListCard>
-    </ul>
-    <HomeTitle>最新音乐</HomeTitle>
-    <ul class="home_songlist">
-      <SongListItem
-        v-for="item in songList"
-        :key="item.id"
-        :item="item"
+    <div class="home">
+      <HomeTitle>编辑推荐</HomeTitle>
+      <ul class="home_cardlist">
+        <MusicListCard
+          v-for="item in personalizeds"
+          :key="item.id"
+          :item="item"
+        ></MusicListCard>
+      </ul>
+      <HomeTitle>最新音乐</HomeTitle>
+
+      <PlayList
+        :playlist="songList"
         :playing="playing"
         :currentSongId="currentSongId"
-        @change-current-song="$emit('change-current-song', $event,songList)"
-      ></SongListItem>
-    </ul>
-    
-  </div>
+        :hasNum="false"
+        @change-current-song="changeCurrentSong"
+      />
+    </div>
 </template>
 
 
 <style lang="less" scoped>
+.home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: calc(100vh - 40px);
+  padding-bottom: 40px;
+  background-color: #fff;
+  overflow: auto;
+}
 .home_cardlist {
   margin-top: 10px;
   display: flex;
@@ -38,7 +45,8 @@
 <script>
 import HomeTitle from "@/components/HomeTitle.vue";
 import MusicListCard from "@/components/MusicListCard.vue";
-import SongListItem from "@/components/SongListItem.vue";
+// import SongListItem from "@/components/SongListItem.vue";
+import PlayList from "@/components/PlayList.vue";
 export default {
   name: "Home",
   props: {
@@ -60,7 +68,7 @@ export default {
   components: {
     HomeTitle,
     MusicListCard,
-    SongListItem,
+    PlayList,
   },
   created: function () {
     // 请求获取推荐歌单数据
@@ -75,6 +83,12 @@ export default {
       .then((res) => {
         this.songList = res.data.result;
       });
+  },
+  methods: {
+    //点击歌单列表进行播放时，向上传递当前歌曲对象及歌单列表
+    changeCurrentSong: function (item, songList) {
+      this.$emit("change-current-song", item, songList);
+    },
   },
 };
 </script>

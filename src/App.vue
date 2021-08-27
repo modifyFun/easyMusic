@@ -5,11 +5,22 @@
       <li><router-link to="/hot">热歌榜</router-link></li>
       <li><router-link to="/search">搜索</router-link></li>
     </ul>
-    <router-view
-      @change-current-song="changeCurrentSong"
-      :playing="playing"
-      :currentSongId="currentSong ? currentSong.id : null"
-    />
+    <section class="app_router">
+      <transition
+        name="app_router"
+        :enter-active-class="'animate__animated '+$route.meta.animateIn"
+        :leave-active-class="'animate__animated '+$route.meta.animateOut"
+      >
+        <router-view
+          @change-current-song="changeCurrentSong"
+          :playing="playing"
+          :currentSong="currentSong"
+          :prencent="prencent"
+          :currentSongList="currentSongList"
+          :currentSongId="currentSong ? currentSong.id : null"
+        />
+      </transition>
+    </section>
     <audio
       ref="audio"
       :src="audioSource"
@@ -33,12 +44,19 @@
 </template>
 
 <style lang="less">
+
+.animate__animated {
+  animation-duration: 0.3s;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: hsl(210, 29%, 24%);
-  padding-bottom: 40px;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #nav {
@@ -72,7 +90,12 @@
     url("//at.alicdn.com/t/font_2763996_skzk8fc3nd.ttf?t=1629947647946")
       format("truetype");
 }
-
+audio{
+  height: 0;
+}
+.app_router{
+  position: relative;
+}
 .app_playBar {
   position: fixed;
   left: 0;
@@ -90,7 +113,7 @@ export default {
   data: function () {
     return {
       currentSong: null,
-      currentSongList:null,
+      currentSongList: null,
       playing: false,
       currentTime: 0,
       duration: 0,
@@ -98,8 +121,7 @@ export default {
   },
   methods: {
     changeCurrentSong: function (item, songList) {
-      console.log(item);
-      this.currentSongList = songList||this.currentSongList;
+      this.currentSongList = songList || this.currentSongList;
       this.currentSong = item;
     },
     timeupdate: function (e) {
@@ -108,8 +130,8 @@ export default {
     durationchange: function (e) {
       this.duration = e.target.duration;
     },
-    changePlaying: function (val) {
-      val ? this.$refs.audio.play() : this.$refs.audio.pause();
+    changePlaying: function () {
+      !this.playing ? this.$refs.audio.play() : this.$refs.audio.pause();
     },
   },
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <li class="song_item" @click="$emit('change-current-song',data)">
+  <li class="song_item" @click.stop="$emit('change-current-song',data)">
     <slot></slot>
     <div class="left">
       <h3>

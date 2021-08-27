@@ -1,13 +1,13 @@
 <template>
   <ul v-if="playlist">
     <SongListItem
-      v-for="(item, index) in playlist.tracks"
+      v-for="(item, index) in playlist"
       :key="item.id"
       :item="item"
       :playing="playing"
       :currentSongId="currentSongId"
       @change-current-song="
-        $emit('change-current-song', $event, playlist.tracks)
+        $emit('change-current-song', $event, playlist)
       "
     >
       <div class="num" v-if="hasNum">{{ index + 1 }}</div>
@@ -20,7 +20,7 @@ import SongListItem from "@/components/SongListItem.vue";
 export default {
   props: {
     hasNum: Boolean,
-    playlist:Object,
+    playlist:Array,
     playing: {
       type: Boolean,
       require: true,

@@ -1,23 +1,14 @@
 <template>
-  <!-- <ul class="playlists" v-if="playlist">
-    <SongListItem
-      v-for="(item,index) in playlist.tracks"
-      :key="item.id"
-      :item="item"
-      :playing="playing"
-      :currentSongId="currentSongId"
-      @change-current-song="$emit('change-current-song', $event,playlist.tracks)"
-    >
-    <div class="num">{{index+1}}</div>
-    </SongListItem>
-  </ul> -->
-<PlayList
-      :playlist="playlist"
+  <div class="playlists">
+    <PlayList
+      v-if="playlists"
+      :playlist="playlists.tracks"
       :playing="playing"
       :currentSongId="currentSongId"
       :hasNum="true"
       @change-current-song="changeCurrentSong"
     />
+  </div>
 </template>
 
 <script>
@@ -36,7 +27,7 @@ export default {
   data: function () {
     return {
       id: "",
-      playlist: null,
+      playlists: null,
     };
   },
   components: {
@@ -52,14 +43,14 @@ export default {
           },
         })
         .then((res) => {
-          this.playlist = res.data.playlist;
+          this.playlists = res.data.playlist;
           // console.log(this.playlist.tracks);
         });
     },
     //点击歌单列表进行播放时，向上传递当前歌曲对象及歌单列表
-    changeCurrentSong:function(item, songList){
-      this.$emit('change-current-song', item, songList);
-    }
+    changeCurrentSong: function (item, songList) {
+      this.$emit("change-current-song", item, songList);
+    },
   },
   created: function () {
     this.getPlayListDetail(this.$route.query.id);
@@ -68,11 +59,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.playlists {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
+  overflow: auto;
+  background-color: #fff;
+}
 // .num{
 //   width: 28px;
 //   font-size: 16px;
-  
+
 //   color: #888;
 // }
 </style>

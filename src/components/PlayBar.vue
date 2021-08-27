@@ -1,5 +1,5 @@
 <template>
-  <div class="palybar" v-if="currentSong">
+  <div class="palybar" v-if="currentSong" @click.stop="openPlayer">
     <div class="music_pic" :class="{ playing: playing }">
       <div class="img">
         <img :src="currentSong.picUrl" alt="" />
@@ -11,7 +11,7 @@
         artiset.name
       }}</span>
     </div>
-    <div class="music_player_btn" @click="play">
+    <div class="music_player_btn" @click.stop="play">
       <svg width="30" height="30">
         <circle
           fill="transparent"
@@ -38,25 +38,39 @@
       <span class="paused" v-show="!playing">&#xe673;</span>
       <span class="playing" v-show="playing">&#xe625;</span>
     </div>
-    <div class="music_list_btn" @click="listControll">&#xe600;</div>
-    <div class="mask" v-show="isShowList" @click="listControll"></div>
-    <div class="list" v-show="isShowList">
-      <ul>
-        <SongListItem
-          v-for="item in currentSongList"
-          :key="item.id"
-          :item="item"
-          :playing="playing"
-          :currentSongId="currentSong.id"
-          @change-current-song="$emit('change-current-song', $event)"
-        ></SongListItem>
-      </ul>
-    </div>
+
+    <div class="music_list_btn" @click.stop="listControll">&#xe600;</div>
+
+    <transition
+      name="music_list_btn"
+      enter-active-class="animate__animated  animate__fadeIn"
+      leave-active-class="animate__animated  animate__fadeOut"
+    >
+      <div class="mask" v-show="isShowList" @click.stop="listControll"></div>
+    </transition>
+
+    <transition
+      name="music_list"
+      enter-active-class="animate__animated  animate__fadeInUp"
+      leave-active-class="animate__animated  animate__fadeOutDownBig"
+    >
+      <div class="list" v-show="isShowList" @click.stop="">
+        <div class="list-content">
+          <PlayList
+            :playlist="currentSongList"
+            :playing="playing"
+            :currentSongId="currentSong.id"
+            :hasNum="false"
+            @change-current-song="changeCurrentSong"
+          />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import SongListItem from "@/components/SongListItem.vue";
+import PlayList from "@/components/PlayList.vue";
 export default {
   props: {
     currentSong: Object,
@@ -76,16 +90,20 @@ export default {
   },
   methods: {
     play: function () {
-      this.$emit("change-playing", !this.playing);
+      this.$emit("change-playing");
     },
     listControll: function () {
-      // console.log(event)
-      // event.stopPropagationn();
       this.isShowList = !this.isShowList;
+    },
+    changeCurrentSong: function (item, songList) {
+      this.$emit("change-current-song", item, songList);
+    },
+    openPlayer: function () {
+      this.$router.push("/player");
     },
   },
   components: {
-    SongListItem,
+    PlayList,
   },
 };
 </script>
@@ -181,30 +199,46 @@ export default {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0,0.2);
   }
   .list {
     position: fixed;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
+    margin-left: -47%;
     width: 94%;
     height: 50%;
-    padding:10px 0;
-    overflow-y:auto;
-    border-radius: 10px;
+    padding: 10px 0;
+    overflow: hidden;
+    border-radius: 16px;
     background-color: #fff;
+    .list-content {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
   }
 }
 
-@keyframes imgAnimate {
-  from {
-    transform: rotate(0deg);
-    transform-origin: center;
-  }
-  to {
-    transform: rotate(360deg);
-    transform-origin: center;
-  }
-}
+
+// .fade-enter-active,
+// .fade-leave-active {
+//   transition: all 0.8s;
+// }
+// .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+//   // transform: translateY(100%);
+//   opacity: 0;
+//   margin-bottom: -100%;
+// }
+
+// @keyframes imgAnimate {
+//   from {
+//     transform: rotate(0deg);
+//     transform-origin: center;
+//   }
+//   to {
+//     transform: rotate(360deg);
+//     transform-origin: center;
+//   }
+// }
 </style>
