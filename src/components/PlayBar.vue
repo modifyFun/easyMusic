@@ -2,7 +2,7 @@
   <div class="palybar" v-if="currentSong" @click.stop="openPlayer">
     <div class="music_pic" :class="{ playing: playing }">
       <div class="img">
-        <img :src="currentSong.picUrl" alt="" />
+        <img :src="currentSong.picUrl?currentSong.picUrl : '/img/disc_default.ba7c53e2.png'" alt="" />
       </div>
     </div>
     <div class="music_title">
@@ -124,6 +124,7 @@ export default {
     &.playing {
       .img {
         transform: translateY(-6px);
+        
         img {
           animation-play-state: running;
         }
@@ -231,14 +232,14 @@ export default {
 //   margin-bottom: -100%;
 // }
 
-// @keyframes imgAnimate {
-//   from {
-//     transform: rotate(0deg);
-//     transform-origin: center;
-//   }
-//   to {
-//     transform: rotate(360deg);
-//     transform-origin: center;
-//   }
-// }
+@keyframes imgAnimate {
+  from {
+    transform: rotate(0deg);
+    transform-origin: center;
+  }
+  to {
+    transform: rotate(360deg);
+    transform-origin: center;
+  }
+}
 </style>

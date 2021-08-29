@@ -3,15 +3,18 @@
     <slot></slot>
     <div class="left">
       <h3>
-        {{ data.name
-        }}<span v-for="alias in data.alias" :key="alias">{{ alias }}</span>
+        {{ data.name}}<span v-for="alias in data.alias" :key="alias">{{ alias }}</span>
       </h3>
       <div class="info">
         <em></em>
         <i v-for="artiset in data.artists" :key="artiset.id">
-          {{ artiset.name }}</i
-        >
-        <b>{{ data.album.name }}</b>
+          {{ artiset.name }}</i>
+
+        <!-- <span v-if="data.album">
+            <b v-for="i in data.album" :key="i.id">{{ i.name }}</b>
+        </span> -->
+          <b >{{ data.album.name }}</b>
+      
       </div>
     </div>
     <div class="player" :class="{current:currentSongId === data.id,playing:playing}">
@@ -41,11 +44,9 @@ export default {
         id: this.item.song?.id ? this.item.song.id : this.item.id,
         name: this.item.song?.name ? this.item.song.name : this.item.name,
         alias: this.item.song?.alias ? this.item.song.alias : this.item.alia,
-        artists: this.item.song?.artists
-          ? this.item.song.artists
-          : this.item.ar,
-        album: this.item.song?.album ? this.item.song.album : this.item.al,
-        picUrl:this.item.picUrl? this.item.picUrl:this.item.al.picUrl
+        artists: this.item.song?.artists? this.item.song.artists: this.item.ar?this.item.ar:this.item.artists,
+        album: this.item.song?.album ? this.item.song.album : this.item.al? this.item.al:this.item.album,
+        picUrl:this.item.picUrl? this.item.picUrl:this.item.al?.picUrl? this.item.al.picUrl:this.item.picUrl
       };
     },
   },
