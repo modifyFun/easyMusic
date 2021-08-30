@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Search from "../views/Search.vue";
 import SongLists from "../views/SongLists.vue";
-import Player from "../views/Player.vue";
+// import Player from "../views/Player.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -15,7 +15,7 @@ const routes = [
       showNavBar: true,
       keepAlive: true,
       animateIn: "animate__fadeInUp",
-      animateOut: "animate__fadeOutDown",
+      animateOut: "animate__fadeOutUp",
     },
     beforeEnter: (to, from, next) => {
       if (from.name == "Hot" || from.name == "Search") {
@@ -23,7 +23,7 @@ const routes = [
         to.meta.animateOut = "animate__slideOutRight";
       }else{
         to.meta.animateIn = "animate__fadeInUp";
-        to.meta.animateOut = "animate__fadeOutDown";
+        to.meta.animateOut = "animate__fadeOutUp";
       }
       next();
     },
@@ -46,7 +46,7 @@ const routes = [
         to.meta.animateOut = "animate__slideOutRight";
       }else{
         to.meta.animateIn = "animate__fadeInUp";
-        to.meta.animateOut = "animate__fadeOutDown";
+        to.meta.animateOut = "animate__fadeOutUp";
       }
       next();
     },
@@ -66,7 +66,7 @@ const routes = [
         to.meta.animateOut = "animate__slideOutLeft";
       }else{
         to.meta.animateIn = "animate__fadeInUp";
-        to.meta.animateOut = "animate__fadeOutDown";
+        to.meta.animateOut = "animate__fadeOutUp";
       }
       next();
     },
@@ -78,20 +78,19 @@ const routes = [
     meta: {
       showNavBar: false,
       animateIn: "animate__fadeInUp",
-      animateOut: "animate__fadeOutDown",
+      animateOut: "animate__fadeOutUp",
     },
   },
-  {
-    path: "/player",
-    name: "player",
-    component: Player,
-    meta: {
-      showNavBar: false,
-      animateIn: "animate__fadeInUp",
-      animateOut: "animate__fadeOutDown",
-    },
-
-  },
+  // {
+  //   path: "/player",
+  //   name: "player",
+  //   component: Player,
+  //   meta: {
+  //     showNavBar: false,
+  //     animateIn: "animate__fadeInUp",
+  //     animateOut: "animate__fadeOutUp",
+  //   },
+  // },
 ];
 
 const router = new VueRouter({

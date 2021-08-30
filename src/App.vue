@@ -44,12 +44,11 @@
 </template>
 
 <style lang="less">
-
 @font-face {
   font-family: 'iconfont';  /* Project id 2763996 */
-  src: url('//at.alicdn.com/t/font_2763996_en52bun4m0s.woff2?t=1630255053666') format('woff2'),
-       url('//at.alicdn.com/t/font_2763996_en52bun4m0s.woff?t=1630255053666') format('woff'),
-       url('//at.alicdn.com/t/font_2763996_en52bun4m0s.ttf?t=1630255053666') format('truetype');
+  src: url('//at.alicdn.com/t/font_2763996_xya596k9xqm.woff2?t=1630338788172') format('woff2'),
+       url('//at.alicdn.com/t/font_2763996_xya596k9xqm.woff?t=1630338788172') format('woff'),
+       url('//at.alicdn.com/t/font_2763996_xya596k9xqm.ttf?t=1630338788172') format('truetype');
 }
 .animate__animated {
   animation-duration: 0.3s;
