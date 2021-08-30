@@ -1,7 +1,10 @@
 <template>
-  <div class="playlists">
+  <div class="playlists"   v-if="playlists">
+    <SongListHead
+    :img="playlists.coverImgUrl"
+    :name="playlists.name"
+    :description="playlists.description"/>
     <PlayList
-      v-if="playlists"
       :playlist="playlists.tracks"
       :playing="playing"
       :currentSongId="currentSongId"
@@ -13,6 +16,7 @@
 
 <script>
 import PlayList from "@/components/PlayList.vue";
+import SongListHead from "@/components/SongListHead.vue";
 export default {
   props: {
     playing: {
@@ -32,6 +36,7 @@ export default {
   },
   components: {
     PlayList,
+    SongListHead,
   },
   methods: {
     //获取歌单详情
