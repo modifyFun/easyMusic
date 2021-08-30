@@ -9,7 +9,7 @@
     </div>
     <div class="song_img">
       <div class="disc" :class="{ playing: playing }">
-        <img :src="currentSong.picUrl" alt="歌曲封面" />
+        <img :src="currentSong.picUrl" />
       </div>
     </div>
 

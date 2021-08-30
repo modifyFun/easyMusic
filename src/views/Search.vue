@@ -54,11 +54,17 @@ export default {
       searched: false,
       searching: false,
       hasMore: true,
+      isClickSearch:false,
       page: 0,
     };
   },
   watch: {
     keywords: function (keywords) {
+     
+      if(this.isClickSearch){
+        this.isClickSearch = false;
+        return ;
+      }
       this.searched = false;
       //获取搜索推荐
       this.axios
@@ -91,6 +97,7 @@ export default {
     },
     clickSearch: function (keywords) {
       this.keywords = keywords;
+      this.isClickSearch = true;
       this.search(this.keywords);
     },
     //搜索歌曲
@@ -168,6 +175,7 @@ export default {
       border: none;
       outline: none;
       font-size: 14px;
+      -webkit-tap-highlight-color: transparent;
     }
     i,
     em {

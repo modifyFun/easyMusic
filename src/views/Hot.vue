@@ -1,7 +1,9 @@
 <template>
   
     <div class="about">
-      <h1>This is an about page</h1>
+      <div class="">
+        <img src="../assets/img/index_icon_2x.png" >
+      </div>
     </div>
 </template>
 
