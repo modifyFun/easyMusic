@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" @scroll="lazyLoad">
     <div class="search_input">
       <i>&#xe635;</i>
       <input
@@ -11,12 +11,12 @@
       />
       <em v-show="keywords" @click="clear">&#xed65;</em>
     </div>
-    <SearchHotList v-show="!keywords" :hot="hot" @search="search" />
+    <SearchHotList v-show="!keywords" :hot="hot" @search="clickSearch" />
     <SearchSuggest
       v-show="keywords && suggests && !searched"
       :suggests="suggests"
       :keywords="keywords"
-      @search="search"
+      @search="clickSearch"
     />
     <PlayList
       v-show="keywords && songs && searched"
@@ -26,6 +26,7 @@
       :hasNum="false"
       @change-current-song="changeCurrentSong"
     />
+    <p v-if="!hasMore" class="end">你看到我的底线了</p>
   </div>
 </template>
 
@@ -51,10 +52,14 @@ export default {
       songs: [],
       keywords: "",
       searched: false,
+      searching: false,
+      hasMore: true,
+      page: 0,
     };
   },
   watch: {
     keywords: function (keywords) {
+      this.searched = false;
       //获取搜索推荐
       this.axios
         .get("http://apis.netstart.cn/music/search/suggest", {
@@ -63,8 +68,9 @@ export default {
           },
         })
         .then((res) => {
+          this.songs = [];
+          this.page = 0;
           this.suggests = res.data.result?.songs;
-          this.searched = false;
         });
     },
   },
@@ -79,25 +85,50 @@ export default {
     clear: function () {
       this.keywords = "";
       this.searched = false;
+
+      this.songs = [];
+      this.page = 0;
+    },
+    clickSearch: function (keywords) {
+      this.keywords = keywords;
+      this.search(this.keywords);
     },
     //搜索歌曲
     search: function (keywords) {
       if (typeof keywords == "object") {
+        //按回车搜索时，keywords会变成事件对象
         keywords = this.keywords;
-      } else {
-        this.keywords = keywords;
       }
-
+      //发送搜索请求
       this.axios
         .get("http://apis.netstart.cn/music/search", {
           params: {
             keywords,
+            limit: 30,
+            offset: this.page * 30,
           },
         })
         .then((res) => {
-          this.songs = res.data.result.songs;
-          this.searched = true;
+          this.songs.push(...res.data.result.songs);
+          this.hasMore = res.data.result.hasMore;
+          this.searched = true; //搜索完成修改完成标志
+          this.searching = false;
+          this.page++;
         });
+    },
+    lazyLoad: function (event) {
+      if (
+        event.target.scrollHeight -
+          event.target.offsetHeight -
+          event.target.scrollTop <
+          20 &&
+        !this.searching &&
+        this.searched &&
+        this.hasMore
+      ) {
+        this.searching = true;
+        this.search(this.keywords);
+      }
     },
     changeCurrentSong: function (item, songList) {
       this.$emit("change-current-song", item, songList);
@@ -147,6 +178,11 @@ export default {
       font-size: 14px;
       line-height: 30px;
     }
+  }
+  .end {
+    text-align: center;
+    size: 12px;
+    color: rgb(201, 201, 201);
   }
 }
 </style>>

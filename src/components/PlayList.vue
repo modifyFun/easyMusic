@@ -2,7 +2,7 @@
   <ul v-if="playlist">
     <SongListItem
       v-for="(item, index) in playlist"
-      :key="item.id"
+      :key="index"
       :item="item"
       :playing="playing"
       :currentSongId="currentSongId"

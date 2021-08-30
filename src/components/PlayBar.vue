@@ -151,6 +151,11 @@ export default {
     font-size: 16px;
     padding: 0 10px;
     flex: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
     span {
       font-size: 12px;
       color: #888;
