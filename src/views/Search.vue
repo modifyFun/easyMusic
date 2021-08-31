@@ -12,12 +12,14 @@
       <em v-show="keywords" @click="clear">&#xed65;</em>
     </div>
     <SearchHotList v-show="!keywords" :hot="hot" @search="clickSearch" />
+    <SearchHistory  v-show="!keywords" :history="history" @click-search="clickSearch" @del-histroy="delHistroy"/>
     <SearchSuggest
       v-show="keywords && suggests && !searched"
       :suggests="suggests"
       :keywords="keywords"
       @search="clickSearch"
     />
+
     <PlayList
       v-show="keywords && songs && searched"
       :playlist="songs"
@@ -26,13 +28,14 @@
       :hasNum="false"
       @change-current-song="changeCurrentSong"
     />
-    <p v-if="!hasMore" class="end">你看到我的底线了</p>
+    <p v-if="keywords && songs && searched && !hasMore" class="end">你看到我的底线了</p>
   </div>
 </template>
 
 <script>
 import SearchHotList from "@/components/SearchHotList.vue";
 import SearchSuggest from "@/components/SearchSuggest.vue";
+import SearchHistory from "@/components/SearchHistory.vue";
 import PlayList from "@/components/PlayList.vue";
 export default {
   props: {
@@ -56,6 +59,7 @@ export default {
       hasMore: true,
       isClickSearch:false,
       page: 0,
+      history: JSON.parse(window.localStorage.getItem("history")) || [],
     };
   },
   watch: {
@@ -106,6 +110,10 @@ export default {
         //按回车搜索时，keywords会变成事件对象
         keywords = this.keywords;
       }
+
+      this.history= [...new Set([...this.history, keywords])];
+      window.localStorage.setItem("history", JSON.stringify(this.history));
+
       //发送搜索请求
       this.axios
         .get("http://apis.netstart.cn/music/search", {
@@ -140,10 +148,23 @@ export default {
     changeCurrentSong: function (item, songList) {
       this.$emit("change-current-song", item, songList);
     },
+    delHistroy:function(val){
+      console.log(val);
+
+      let historySet = new Set([...this.history]);
+      if(historySet.delete(val)){
+        this.history = [...historySet];
+      }
+       window.localStorage.setItem("history", JSON.stringify(this.history));
+      //  this.history= [...new Set([...this.history]).delete(val)];
+      //  console.log(this.history);
+      // window.localStorage.setItem("history", JSON.stringify(this.history));
+    }
   },
   components: {
     SearchHotList,
     SearchSuggest,
+    SearchHistory,
     PlayList,
   },
 };
@@ -189,7 +210,9 @@ export default {
   }
   .end {
     text-align: center;
-    size: 12px;
+    
+    font-size: 12px;
+    line-height: 40px;
     color: rgb(201, 201, 201);
   }
 }

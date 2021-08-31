@@ -50,14 +50,12 @@
 .animate__animated {
   animation-duration: 0.4s;
 }
+
 @font-face {
-  font-family: "iconfont"; /* Project id 2763996 */
-  src: url("//at.alicdn.com/t/font_2763996_xya596k9xqm.woff2?t=1630338788172")
-      format("woff2"),
-    url("//at.alicdn.com/t/font_2763996_xya596k9xqm.woff?t=1630338788172")
-      format("woff"),
-    url("//at.alicdn.com/t/font_2763996_xya596k9xqm.ttf?t=1630338788172")
-      format("truetype");
+  font-family: 'iconfont';  /* Project id 2763996 */
+  src: url('//at.alicdn.com/t/font_2763996_3zpdgpdwwfw.woff2?t=1630403361511') format('woff2'),
+       url('//at.alicdn.com/t/font_2763996_3zpdgpdwwfw.woff?t=1630403361511') format('woff'),
+       url('//at.alicdn.com/t/font_2763996_3zpdgpdwwfw.ttf?t=1630403361511') format('truetype');
 }
 
 #app {
