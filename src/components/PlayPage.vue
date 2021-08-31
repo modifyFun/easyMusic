@@ -12,6 +12,7 @@
       <div class="share"></div>
     </div>
     <div class="song_img">
+      <div class="needle" :class="{playing: playing}"></div>
       <div class="disc" :class="{ playing: playing }">
         <img :src="currentSong.picUrl" />
       </div>
@@ -109,9 +110,10 @@ export default {
   }
 }
 .song_img {
-  margin: 80px 0;
+  padding: 80px 0;
   display: flex;
   justify-content: center;
+  position: relative;
   .disc {
     width: 60vw;
     height: 60vw;
@@ -131,6 +133,25 @@ export default {
     &.playing {
       animation-play-state: running;
     }
+  }
+  .needle{
+    width: 130px;
+    height: 130px;
+    // background-color: red;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 90;
+    background-image: url("../assets/img/needle-ab.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition:transform .4s linear ;
+    transform: rotate(-20deg);
+    transform-origin:left top;
+    &.playing{
+        transform: rotate(2deg);
+    }
+
   }
 }
 .playBar {
