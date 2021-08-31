@@ -8,8 +8,8 @@
     <section class="app_router">
       <transition
         name="app_router"
-        :enter-active-class="'animate__animated '+$route.meta.animateIn"
-        :leave-active-class="'animate__animated '+$route.meta.animateOut"
+        :enter-active-class="'animate__animated ' + $route.meta.animateIn"
+        :leave-active-class="'animate__animated ' + $route.meta.animateOut"
       >
         <router-view
           @change-current-song="changeCurrentSong"
@@ -30,28 +30,34 @@
       @pause="playing = false"
       @timeupdate="timeupdate"
       @durationchange="durationchange"
+      @ended="ended"
     />
-    <PlayBar
+    <Player
       :currentSong="currentSong"
       :playing="playing"
       :prencent="prencent"
       :currentSongList="currentSongList"
       @change-playing="changePlaying"
       @change-current-song="changeCurrentSong"
+      @preve-song="preveSong"
+      @next-song="nextSong"
       class="app_playBar"
     />
   </div>
 </template>
 
 <style lang="less">
-@font-face {
-  font-family: 'iconfont';  /* Project id 2763996 */
-  src: url('//at.alicdn.com/t/font_2763996_xya596k9xqm.woff2?t=1630338788172') format('woff2'),
-       url('//at.alicdn.com/t/font_2763996_xya596k9xqm.woff?t=1630338788172') format('woff'),
-       url('//at.alicdn.com/t/font_2763996_xya596k9xqm.ttf?t=1630338788172') format('truetype');
-}
 .animate__animated {
-  animation-duration: 0.3s;
+  animation-duration: 0.4s;
+}
+@font-face {
+  font-family: "iconfont"; /* Project id 2763996 */
+  src: url("//at.alicdn.com/t/font_2763996_xya596k9xqm.woff2?t=1630338788172")
+      format("woff2"),
+    url("//at.alicdn.com/t/font_2763996_xya596k9xqm.woff?t=1630338788172")
+      format("woff"),
+    url("//at.alicdn.com/t/font_2763996_xya596k9xqm.ttf?t=1630338788172")
+      format("truetype");
 }
 
 #app {
@@ -87,30 +93,32 @@
   }
 }
 
-audio{
+audio {
   height: 0;
 }
-.app_router{
+.app_router {
   position: relative;
 }
 .app_playBar {
   position: fixed;
   left: 0;
   bottom: -1px;
+  z-index: 1000;
   background-color: #fff;
 }
 </style>
 
 <script>
-import PlayBar from "@/components/PlayBar.vue";
+import Player from "@/components/Player.vue";
 export default {
   components: {
-    PlayBar,
+    Player,
   },
   data: function () {
     return {
       currentSong: null,
       currentSongList: null,
+      index: 0,
       playing: false,
       currentTime: 0,
       duration: 0,
@@ -118,18 +126,53 @@ export default {
   },
   methods: {
     changeCurrentSong: function (item, songList) {
+      //改变当前音乐
       this.currentSongList = songList || this.currentSongList;
       this.currentSong = item;
+      for (let i = 0; i < this.currentSongList.length; i++) {
+        if (this.currentSongList[i].id == this.currentSong.id) {
+          this.index = i;
+        }
+      }
     },
     timeupdate: function (e) {
+      //播放歌曲时，歌曲播放时间
       this.currentTime = e.target.currentTime;
     },
     durationchange: function (e) {
+      //更换歌曲时歌曲时间改变
       this.duration = e.target.duration;
     },
     changePlaying: function () {
       !this.playing ? this.$refs.audio.play() : this.$refs.audio.pause();
     },
+    preveSong: function () {//上一曲
+      this.index--;
+      if (this.index < 0) {
+        this.index = this.currentSongList.length - 1;
+      }
+      this.currentSong = this.fromatSong(this.currentSongList[this.index]);
+    },
+    nextSong: function () {
+      this.index++;
+      if (this.index > this.currentSongList.length - 1) {
+        this.index = 0;
+      }
+     this.currentSong = this.fromatSong(this.currentSongList[this.index]);
+    },
+    ended:function(){//播放完后切歌
+       this.nextSong();
+    },
+    fromatSong:function(item){ //格式化歌曲对象
+       return {
+        id: item.song?.id ? item.song.id : item.id,
+        name: item.song?.name ? item.song.name : item.name,
+        alias: item.song?.alias ? item.song.alias : item.alia,
+        artists: item.song?.artists? item.song.artists: item.ar?item.ar:item.artists,
+        album: item.song?.album ? item.song.album : item.al? item.al:item.album,
+        picUrl:item.picUrl? item.picUrl:item.al?.picUrl? item.al.picUrl:item.picUrl
+      };
+    }
   },
   computed: {
     audioSource: function () {

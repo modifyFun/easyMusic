@@ -19,13 +19,13 @@
     <div class="progress"></div>
     <ul class="playBar">
       <li>&#xe66e;</li>
-      <li>&#xe6dc;</li>
+      <li @click="$emit('preve-song')">&#xe6dc;</li>
       <li @click="$emit('change-playing')">
         <span v-show="playing">&#xe625;</span>
         <span v-show="!playing">&#xe673;</span>
         </li>
-      <li>&#xed66;</li>
-      <li @click.stop="$emit('listControll')">&#xe600;</li>
+      <li @click="$emit('next-song')">&#xed66;</li>
+      <li @click.stop="$emit('listControll',true)">&#xe600;</li>
     </ul>
   </div>
 </template>
