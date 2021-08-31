@@ -139,9 +139,9 @@ export default {
       }
       i{
         width: 2px;
-        height: 80%;
+        height: 76%;
         background-color: red;
-        animation: 1s playing linear alternate infinite paused;
+        animation: .8s playing linear alternate infinite paused;
         // animation-play-state: paused;
         &:nth-child(1){
           height: 90%;

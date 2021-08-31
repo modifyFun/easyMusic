@@ -135,8 +135,8 @@ export default {
     }
   }
   .needle{
-    width: 130px;
-    height: 130px;
+    width: 30%;
+    height: 30%;
     // background-color: red;
     position: absolute;
     top: 0;
@@ -146,10 +146,10 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     transition:transform .4s linear ;
-    transform: rotate(-20deg);
+    transform: rotate(-24deg);
     transform-origin:left top;
     &.playing{
-        transform: rotate(2deg);
+        transform: rotate(4deg);
     }
 
   }
