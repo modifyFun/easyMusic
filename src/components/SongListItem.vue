@@ -1,23 +1,27 @@
 <template>
-  <li class="song_item" @click.stop="$emit('change-current-song',data)">
+  <li class="song_item" @click.stop="playSong">
     <slot></slot>
     <div class="left">
       <h3>
-        {{ data.name}}<span v-for="alias in data.alias" :key="alias">{{ alias }}</span>
+        {{ data.name
+        }}<span v-for="alias in data.alias" :key="alias">{{ alias }}</span>
       </h3>
       <div class="info">
         <em></em>
         <i v-for="artiset in data.artists" :key="artiset.id">
-          {{ artiset.name }}</i>
+          {{ artiset.name }}</i
+        >
 
         <!-- <span v-if="data.album">
             <b v-for="i in data.album" :key="i.id">{{ i.name }}</b>
         </span> -->
-          <b >{{ data.album.name }}</b>
-      
+        <b>{{ data.album.name }}</b>
       </div>
     </div>
-    <div class="player" :class="{current:currentSongId === data.id,playing:playing}">
+    <div
+      class="player"
+      :class="{ current: currentSongId === data.id, playing: playing }"
+    >
       <i></i>
       <i></i>
       <i></i>
@@ -31,12 +35,12 @@ export default {
   props: {
     item: {
       type: Object,
-      require:true,
+      require: true,
     },
-    currentSongId:{
-      type:Number,
+    currentSongId: {
+      type: Number,
     },
-    playing:Boolean,
+    playing: Boolean,
   },
   computed: {
     data: function () {
@@ -44,10 +48,27 @@ export default {
         id: this.item.song?.id ? this.item.song.id : this.item.id,
         name: this.item.song?.name ? this.item.song.name : this.item.name,
         alias: this.item.song?.alias ? this.item.song.alias : this.item.alia,
-        artists: this.item.song?.artists? this.item.song.artists: this.item.ar?this.item.ar:this.item.artists,
-        album: this.item.song?.album ? this.item.song.album : this.item.al? this.item.al:this.item.album,
-        picUrl:this.item.picUrl? this.item.picUrl:this.item.al?.picUrl? this.item.al.picUrl:this.item.picUrl
+        artists: this.item.song?.artists
+          ? this.item.song.artists
+          : this.item.ar
+          ? this.item.ar
+          : this.item.artists,
+        album: this.item.song?.album
+          ? this.item.song.album
+          : this.item.al
+          ? this.item.al
+          : this.item.album,
+        picUrl: this.item.picUrl
+          ? this.item.picUrl
+          : this.item.al?.picUrl
+          ? this.item.al.picUrl
+          : this.item.picUrl,
       };
+    },
+  },
+  methods: {
+    playSong: function () {
+      this.$emit("change-current-song", this.data);
     },
   },
   created: function () {
@@ -128,50 +149,47 @@ export default {
     background: url("../assets/img/index_icon_2x.png") no-repeat -24px 0;
     background-size: 166px 97px;
     display: flex;
-    align-items:flex-end;
+    align-items: flex-end;
     justify-content: space-evenly;
-    &.current{
+    &.current {
       background-image: none;
-      &.playing{
-        i{
+      &.playing {
+        i {
           animation-play-state: running;
         }
       }
-      i{
+      i {
         width: 2px;
         height: 76%;
         background-color: red;
-        animation: .8s playing linear alternate infinite paused;
+        animation: 0.8s playing linear alternate infinite paused;
         // animation-play-state: paused;
-        &:nth-child(1){
+        &:nth-child(1) {
           height: 90%;
-           animation-delay: 0.9s;
+          animation-delay: 0.9s;
         }
-        &:nth-child(2){
+        &:nth-child(2) {
           height: 80%;
-           animation-delay: 0.6s;
+          animation-delay: 0.6s;
         }
-        &:nth-child(3){
+        &:nth-child(3) {
           height: 70%;
-         animation-delay: 0.3s;
+          animation-delay: 0.3s;
         }
-        &:nth-child(4){
+        &:nth-child(4) {
           height: 80%;
-          
-         
         }
       }
-
     }
   }
 }
 
 @keyframes playing {
-    from{
-      height: 80%;
-    }
-    to{
-      height: 20%;
-    }
+  from {
+    height: 80%;
+  }
+  to {
+    height: 20%;
+  }
 }
 </style>

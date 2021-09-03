@@ -86,6 +86,22 @@ export default {
     playing: Boolean,
     progress:Number,
   },
+  watch:{
+    currentSong:function(){
+      if(!this.currentSong.picUrl){
+        this.axios
+          .get("http://apis.netstart.cn/music/song/detail", {
+            params: {
+              ids: this.currentSong.id,
+            },
+          })
+          .then((res) => {
+           this.currentSong.picUrl = res.data.songs[0].al.picUrl;
+            this.$emit("change-current-song", this.data);
+          });
+      }
+    }
+  }
 };
 </script>
 
