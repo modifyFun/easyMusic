@@ -55,6 +55,7 @@
       @listControll="listControll"
       @preve-song="$emit('preve-song')"
       @next-song="$emit('next-song')"
+      @change-progeress="$emit('change-progeress',$event)"
     />
      </transition>
   </div>

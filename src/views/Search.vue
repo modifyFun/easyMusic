@@ -63,7 +63,7 @@ export default {
     };
   },
   watch: {
-    keywords: function (keywords) {
+    keywords: function (keywords) { 
      
       if(this.isClickSearch){
         this.isClickSearch = false;
@@ -99,7 +99,7 @@ export default {
       this.songs = [];
       this.page = 0;
     },
-    clickSearch: function (keywords) {
+    clickSearch: function (keywords) {  //点击选项搜索
       this.keywords = keywords;
       this.isClickSearch = true;
       this.search(this.keywords);
@@ -124,14 +124,14 @@ export default {
           },
         })
         .then((res) => {
-          this.songs.push(...res.data.result.songs);
-          this.hasMore = res.data.result.hasMore;
+          this.songs.push(...res.data.result.songs);  //添加搜索到的歌曲进搜索结果数组
+          this.hasMore = res.data.result.hasMore; //是否还有更多歌曲
           this.searched = true; //搜索完成修改完成标志
-          this.searching = false;
-          this.page++;
+          this.searching = false; //懒加载防抖标志
+          this.page++;  //搜索列表页码
         });
     },
-    lazyLoad: function (event) {
+    lazyLoad: function (event) {  //懒加载搜索列表
       if (
         event.target.scrollHeight -
           event.target.offsetHeight -
@@ -145,11 +145,10 @@ export default {
         this.search(this.keywords);
       }
     },
-    changeCurrentSong: function (item, songList) {
+    changeCurrentSong: function (item, songList) {  //向上传更改歌曲的信息
       this.$emit("change-current-song", item, songList);
     },
-    delHistroy:function(val){
-      console.log(val);
+    delHistroy:function(val){ //删除选择的历史记录
 
       let historySet = new Set([...this.history]);
       if(historySet.delete(val)){

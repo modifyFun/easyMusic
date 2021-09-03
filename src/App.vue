@@ -41,6 +41,7 @@
       @change-current-song="changeCurrentSong"
       @preve-song="preveSong"
       @next-song="nextSong"
+       @change-progeress="changeProgeress"
       class="app_playBar"
     />
   </div>
@@ -160,6 +161,9 @@ export default {
     },
     ended:function(){//播放完后切歌
        this.nextSong();
+    },
+    changeProgeress:function(prencent){ //拖动进度条改变歌曲进度
+      this.$refs.audio.currentTime = this.duration*prencent;
     },
     fromatSong:function(item){ //格式化歌曲对象
        return {
