@@ -37,11 +37,13 @@
       :playing="playing"
       :prencent="prencent"
       :currentSongList="currentSongList"
+      :currentTime="currentTime"
       @change-playing="changePlaying"
       @change-current-song="changeCurrentSong"
       @preve-song="preveSong"
       @next-song="nextSong"
        @change-progeress="changeProgeress"
+
       class="app_playBar"
     />
   </div>

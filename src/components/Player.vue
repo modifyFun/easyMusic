@@ -50,6 +50,7 @@
       :prencent="prencent"
       :currentSongList="currentSongList"
       :playing="playing"
+      :currentTime="currentTime"
       @closePlayer="closePlayer"
       @change-playing="changePlaying"
       @listControll="listControll"
@@ -71,6 +72,7 @@ export default {
     currentSongList: Array,
     playing: Boolean,
     prencent: Number,
+    currentTime:Number
   },
   data: function () {
     return {
